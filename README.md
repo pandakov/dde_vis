@@ -1,6 +1,8 @@
 # Код к практическому занятию №7 "Визуализация"
 
-## Настройка окружения
+Ноутбук - [notebooks/vis_test.ipynb](./notebooks/vis_test.ipynb)
+
+## 1. Настройка окружения
 
 ### Установка зависимостей
 
@@ -28,9 +30,9 @@ port = "5432"
 dbname = "db_name"
 ```
 
-## Запуск
+## 2. Запуск
 
-Скрипты Streamlit лежат в [src/](./src/).
+Скрипты Streamlit ([docs](https://docs.streamlit.io/get-started/tutorials/create-an-app)) лежат в [src/](./src/).
 
 Запуск сервиса выполняется командой
 ```bash
