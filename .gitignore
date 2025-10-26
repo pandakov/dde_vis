@@ -53,3 +53,5 @@ Thumbs.db
 
 # Custom
 secrets.toml
+data/
+*.lock
