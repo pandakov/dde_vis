@@ -13,9 +13,12 @@ DB_HOST = st.secrets["postgres"]["host"]
 DB_PORT = st.secrets["postgres"]["port"]
 DB_NAME = "homeworks"
 
+
 @st.cache_resource
 def get_engine():
-    conn_str = f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    conn_str = (
+        f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
     return create_engine(conn_str)
 
 
@@ -28,17 +31,20 @@ def list_tables(_engine) -> list[str]:
     insp = inspect(_engine)
     return insp.get_table_names(schema=SCHEMA)
 
+
 @st.cache_data(ttl=300, show_spinner=False)
 def load_table_df(_engine, table: str, limit: int = 1000) -> pd.DataFrame:
     q = text(f'SELECT * FROM "{SCHEMA}"."{table}" LIMIT :lim')
     with _engine.begin() as conn:
         return pd.read_sql(q, conn, params={"lim": limit})
 
+
 @st.cache_data(ttl=300, show_spinner=False)
 def table_rowcount(_engine, table: str) -> int:
     q = text(f'SELECT COUNT(*) AS n FROM "{SCHEMA}"."{table}"')
     with _engine.begin() as conn:
         return pd.read_sql(q, conn).iloc[0, 0]
+
 
 # ---------- Sidebar ----------
 with st.sidebar:
@@ -65,7 +71,7 @@ with st.spinner(f'Загрузка таблицы "{SCHEMA}.{table_sel}"...'):
     df = load_table_df(engine, table_sel, limit=limit_rows)
 
 df.columns = [c.lower() for c in df.columns]
-st.subheader(f'Студент: {table_sel.capitalize()}')
+st.subheader(f"Студент: {table_sel.capitalize()}")
 st.dataframe(df, use_container_width=True)
 
 # ---------- Stats ----------
